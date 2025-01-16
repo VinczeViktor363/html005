@@ -9,8 +9,6 @@
 ## Jelölés
 ### Feladat 005
 
-Töltse le a szoveg.txt és az index.html állományokat:
-
 1. Állítsa be az oldal nyelvét magyarra.
 2. Állítson be, olyan karakterkódolást, amelyben az összes magyar ékezetes megjeleníthető.
 3. Állítsa be, hogy a böngészőfülön a „FreeBSD” felirat jelenjen meg.

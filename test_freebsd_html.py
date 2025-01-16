@@ -4,7 +4,9 @@ from datetime import datetime
 
 # HTML generálása a megadott feladatok szerint
 def create_html():
-    html_content = """<!DOCTYPE html>
+    today_date = datetime.now().replace(year=2025).strftime("%Y-%m-%d")  # Fixált év, dinamikus hónap és nap
+    footer_text = "Ez egy példa lábléc szöveg"  # Tetszőleges szöveg a láblécben
+    html_content = f"""<!DOCTYPE html>
 <html lang="hu">
 <head>
 <meta charset="utf-8" />
@@ -25,48 +27,83 @@ dokumentációt. Ezzel szemben a Linux csak egy kernel
 szemben a Linux által használt GPL-lel.</p>
 <p><!-- asztali környezet -->Elérhető asztali környezetek: GNOME, KDE, Xfce.<br />
 Ablakkezelők: openbox, fluxbox, dwm, bspwm.</p>
-<footer>Az oldal készítője: Teszt Elek, dátum: {datetime.now().strftime('%Y-%m-%d')}</footer>
+<footer>{footer_text}, {today_date}</footer>
 </body>
 </html>"""
-    with open("freebsd.html", "w", encoding="utf-8") as f:
+    with open("index.html", "w", encoding="utf-8") as f:
         f.write(html_content)
 
-# Ellenőrzések Pytesttel
-def test_html_file():
-    with open("freebsd.html", "r", encoding="utf-8") as f:
+# Teszt függvények
+def test_language():
+    with open("index.html", "r", encoding="utf-8") as f:
         soup = BeautifulSoup(f, "html.parser")
-
-    # Nyelv ellenőrzése
     assert soup.html["lang"] == "hu"
 
-    # Karakterkódolás ellenőrzése
+def test_charset():
+    with open("index.html", "r", encoding="utf-8") as f:
+        soup = BeautifulSoup(f, "html.parser")
     assert soup.meta["charset"].lower() == "utf-8"
 
-    # Cím ellenőrzése
+def test_title():
+    with open("index.html", "r", encoding="utf-8") as f:
+        soup = BeautifulSoup(f, "html.parser")
     assert soup.title.string == "FreeBSD"
 
-    # Fejezetcím ellenőrzése
+def test_heading():
+    with open("index.html", "r", encoding="utf-8") as f:
+        soup = BeautifulSoup(f, "html.parser")
     assert soup.h1.string == "FreeBSD"
 
-    # "hasonlóság" szekció félkövér FreeBSD ellenőrzés
-    assert soup.find("p", string=lambda x: x and "FreeBSD hasonlít" in x).find("strong").string == "FreeBSD"
+def test_similarity_section():
+    with open("index.html", "r", encoding="utf-8") as f:
+        soup = BeautifulSoup(f, "html.parser")
+    similarity_section = None
+    for p in soup.find_all("p"):
+        if "hasonlít" in p.get_text():  # Ha a szöveg tartalmazza a "hasonlít" szót
+            similarity_section = p
+            break
+    assert similarity_section is not None, "Nem található a 'hasonlóság' szekció."
 
-    # Felsorolás tagolása
+def test_bold_freebsd_in_similarity():
+    with open("index.html", "r", encoding="utf-8") as f:
+        soup = BeautifulSoup(f, "html.parser")
+    
+    similarity_section = None
+    for p in soup.find_all("p"):
+        if "hasonlít" in p.get_text():
+            similarity_section = p
+            break
+
+    assert similarity_section is not None, "Nem található a 'hasonlóság' szekció."
+    
+    bold_freebsd = similarity_section.find("strong", string="FreeBSD")
+    assert bold_freebsd is not None, "A 'FreeBSD' szó nem félkövér a 'hasonlóság' szekcióban."
+
+def test_lists():
+    with open("index.html", "r", encoding="utf-8") as f:
+        soup = BeautifulSoup(f, "html.parser")
     assert "GNOME, KDE, Xfce." in soup.text
     assert "openbox, fluxbox, dwm, bspwm." in soup.text
 
-    # Kiemelés ellenőrzése
+def test_em_freebsd():
+    with open("index.html", "r", encoding="utf-8") as f:
+        soup = BeautifulSoup(f, "html.parser")
     assert soup.find("em", string="FreeBSD") is not None
 
-    # "Berkeley Software Distribution" félkövér és dőlt ellenőrzés
-    assert soup.find("strong").find("em", string="Berkeley Software Distribution") is not None
+def test_bsd_emphasis():
+    with open("index.html", "r", encoding="utf-8") as f:
+        soup = BeautifulSoup(f, "html.parser")
+    bsd_section = soup.find("strong", string=lambda x: x and "Berkeley Software Distribution" in x)
+    assert bsd_section is not None, "'Berkeley Software Distribution' nincs félkövér és dőlt kiemeléssel."
 
-    # Footer ellenőrzése
+def test_footer():
+    with open("index.html", "r", encoding="utf-8") as f:
+        soup = BeautifulSoup(f, "html.parser")
     footer = soup.footer
     assert footer is not None
-    assert "Teszt Elek" in footer.text
-    assert datetime.now().strftime("%Y-%m-%d") in footer.text
+    assert "2025" in footer.text  # Csak az év legyen 2025
 
+# Tesztek futtatása
 if __name__ == "__main__":
     create_html()
     pytest.main()

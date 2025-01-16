@@ -2,10 +2,9 @@ import pytest
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-# HTML generálása a megadott feladatok szerint
 def create_html():
-    today_date = datetime.now().replace(year=2025).strftime("%Y-%m-%d")  # Fixált év, dinamikus hónap és nap
-    footer_text = "Ez egy példa lábléc szöveg"  # Tetszőleges szöveg a láblécben
+    today_date = datetime.now().replace(year=2025).strftime("%Y-%m-%d")
+    footer_text = "Ez egy példa lábléc szöveg"
     html_content = f"""<!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -59,7 +58,7 @@ def test_similarity_section():
         soup = BeautifulSoup(f, "html.parser")
     similarity_section = None
     for p in soup.find_all("p"):
-        if "hasonlít" in p.get_text():  # Ha a szöveg tartalmazza a "hasonlít" szót
+        if "hasonlít" in p.get_text():
             similarity_section = p
             break
     assert similarity_section is not None, "Nem található a 'hasonlóság' szekció."
@@ -101,7 +100,7 @@ def test_footer():
         soup = BeautifulSoup(f, "html.parser")
     footer = soup.footer
     assert footer is not None
-    assert "2025" in footer.text  # Csak az év legyen 2025
+    assert "2025" in footer.text
 
 # Tesztek futtatása
 if __name__ == "__main__":

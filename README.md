@@ -21,7 +21,9 @@ Töltse le a szoveg.txt és az index.html állományokat:
 > GNOME-tól Xfce-ig, és openbox-tól bspwm-ig.
 >```
 7. A „hasonlóság” tartalmú megjegyzés alatti bekezdésben
+>``` python linenums="1"
 > a „FreeBSD” szót jelölje kiemeltnek
 9. A „FreeBSD” tartalmú megjegyzés alatti bekezdésben
+>``` python linenums="1"
 > a „Berkeley Software Distribution” szavakat jelölje félkövérnek, és dőltnek
 10. A weboldal alján helyezze el egy általános blokk elemben a nevét és az aktuális dátumot.

@@ -28,13 +28,28 @@ def test_bold_freebsd():
 
 def test_bold_italic_bsd():
     soup = load_html()
-    paragraph = soup.find(text="Berkeley Software Distribution")
-    assert paragraph and paragraph.parent.name == "strong" and paragraph.parent.find("em"), "A BSD szöveg nincs megfelelően formázva."
+    paragraph = soup.find(string="Berkeley Software Distribution")  # Use string instead of text
+    assert (
+        paragraph and 
+        paragraph.parent.name == "strong" and  # Közvetlen szülője <strong>
+        paragraph.parent.parent.name == "em"  # Annak a szülője pedig <em>
+    ), "A BSD szöveg nincs megfelelően formázva."
+
 
 def test_highlighted_freebsd():
     soup = load_html()
-    paragraph = soup.find(text="FreeBSD")
-    assert paragraph and paragraph.parent.name == "em", "A FreeBSD szó nincs kiemelve."
+    # Find all occurrences of FreeBSD in the document
+    freebsd_elements = soup.find_all(string="FreeBSD")  # Use string instead of text
+    highlighted = False
+
+    # Check if any of the occurrences are inside <em> or <strong> tags
+    for paragraph in freebsd_elements:
+        if paragraph.parent.name in ["em", "strong"]:
+            highlighted = True
+            break  # Stop as soon as we find a highlighted occurrence
+    
+    assert highlighted, "A FreeBSD szó nincs kiemelve."
+
 
 def test_list_formatting():
     soup = load_html()

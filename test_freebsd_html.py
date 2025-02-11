@@ -2,7 +2,7 @@ import pytest
 from bs4 import BeautifulSoup
 
 def load_html():
-    with open("freebsd.html", "r", encoding="utf-8") as f:
+    with open("index.html", "r", encoding="utf-8") as f:
         return BeautifulSoup(f, "html.parser")
 
 def test_language_setting():

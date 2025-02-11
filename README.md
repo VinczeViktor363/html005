@@ -9,6 +9,7 @@
 ## Jelölés
 ### Feladat 005
 
+0. Tedd a szövegeket bekezdésbe.
 1. Állítsa be az oldal nyelvét magyarra.
 2. Állítson be, olyan karakterkódolást, amelyben az összes magyar ékezetes megjeleníthető.
 3. Állítsa be, hogy a böngészőfülön a „FreeBSD” felirat jelenjen meg.
